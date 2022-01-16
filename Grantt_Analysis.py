@@ -48,9 +48,9 @@ class GranttAnalysis:
         print('\t\tResponse Time\t\tTurnaround Time\t\tWaiting Time')
         for index in range(len(self.grantt_chart)):
             print('P%d\t\t\t%d\t\t\t\t\t%d\t\t\t\t\t%d' % (index,
-                                             self.response_time[index][1],
-                                             self.turn_around_time[index][1],
-                                             self.waiting_time[index][1]))
+                                                           self.response_time[index][1],
+                                                           self.turn_around_time[index][1],
+                                                           self.waiting_time[index][1]))
             response_time_avg += self.response_time[index][1]
             turn_around_time_avg += self.turn_around_time[index][1]
             waiting_time_avg += self.waiting_time[index][1]
@@ -62,8 +62,8 @@ class GranttAnalysis:
         print('---------------------------------------------------------------------------------')
 
         print('Avg\t\t\t%.1f\t\t\t\t%.1f\t\t\t\t%.1f' % (response_time_avg,
-                                               turn_around_time_avg,
-                                               waiting_time_avg))
+                                                         turn_around_time_avg,
+                                                         waiting_time_avg))
 
         print('Total Time:', self.get_total_time())
         print('Idle Time:', self.get_idle_time())
@@ -85,5 +85,3 @@ class GranttAnalysis:
 
     def get_throughput(self):
         return (len(self.grantt_chart) * 1000) / self.get_total_time()
-
-
