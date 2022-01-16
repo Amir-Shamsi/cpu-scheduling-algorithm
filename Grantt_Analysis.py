@@ -24,7 +24,7 @@ class GranttAnalysis:
 
     def calculate_response_time(self):
         for info in self.grantt_chart:
-            self.turn_around_time.append([  # list
+            self.response_time.append([  # list
                 info.process,
                 info.get_start_time()
             ])
@@ -45,7 +45,6 @@ class GranttAnalysis:
         print('                                   %s                                    ' % status)
         print('================================================================================')
 
-        print(self.waiting_time)
         print('\t\tResponse Time\t\tTurnaround Time\t\tWaiting Time')
         for index in range(len(self.grantt_chart)):
             print('P%d\t\t%d\t\t%d\t\t%d' % (index,
