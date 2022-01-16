@@ -23,4 +23,18 @@ class DataCollector:
                                           ))
 
     def getProcesses(self):
+        self.sort()
         return self.processes
+
+    def sort(self):
+        sorted_processes = []
+        arrival_times = []
+        for process in self.processes:
+            arrival_times.append(process.arrival_time)
+        arrival_times.sort()
+        for arrival_time in arrival_times:
+            for process in self.processes:
+                if process.arrival_time == arrival_time:
+                    sorted_processes.append(process)
+        self.processes.clear()
+        self.processes = sorted_processes.copy()
