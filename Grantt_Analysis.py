@@ -26,7 +26,7 @@ class GranttAnalysis:
         for info in self.grantt_chart:
             self.response_time.append([  # list
                 info.process,
-                info.get_start_time()
+                info.get_start_time() - info.process.arrival_time
             ])
 
     def get_total_time(self):
