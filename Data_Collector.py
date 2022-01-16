@@ -33,8 +33,10 @@ class DataCollector:
             arrival_times.append(process.arrival_time)
         arrival_times.sort()
         for arrival_time in arrival_times:
-            for process in self.processes:
+            for process in self.processes.copy():
                 if process.arrival_time == arrival_time:
                     sorted_processes.append(process)
+                    self.processes.remove(process)
         self.processes.clear()
         self.processes = sorted_processes.copy()
+        print(len(self.processes))
