@@ -46,14 +46,19 @@ class GranttAnalysis:
         print('================================================================================')
 
         print('\t\tResponse Time\t\tTurnaround Time\t\tWaiting Time')
-        for index in range(len(self.grantt_chart)):
+        indexes  = []
+        for info in self.grantt_chart:
+            indexes.append(info.process.process_id)
+        count = 0
+        for index in indexes:
             print('P%d\t\t\t%d\t\t\t\t\t%d\t\t\t\t\t%d' % (index,
-                                                           self.response_time[index][1],
-                                                           self.turn_around_time[index][1],
-                                                           self.waiting_time[index][1]))
-            response_time_avg += self.response_time[index][1]
-            turn_around_time_avg += self.turn_around_time[index][1]
-            waiting_time_avg += self.waiting_time[index][1]
+                                                           self.response_time[count][1],
+                                                           self.turn_around_time[count][1],
+                                                           self.waiting_time[count][1]))
+            response_time_avg += self.response_time[count][1]
+            turn_around_time_avg += self.turn_around_time[count][1]
+            waiting_time_avg += self.waiting_time[count][1]
+            count += 1
 
         response_time_avg /= len(self.response_time)
         turn_around_time_avg /= len(self.turn_around_time)
