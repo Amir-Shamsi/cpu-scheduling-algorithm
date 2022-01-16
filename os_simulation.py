@@ -9,5 +9,7 @@ csv_input_path = 'test/process_input_data.csv'
 
 data_collector = DataCollector(csv_path=csv_input_path)
 fcfs = FCFS(processes=data_collector.getProcesses())
+grantt_chart = fcfs.cpu_process()
+# print(grantt_chart)
 analysis = GranttAnalysis(grantt_chart=fcfs.grantt_chart)
 analysis.pretty_print('fcfs')
