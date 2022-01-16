@@ -1,1 +1,1 @@
-# cpu scheduling system
+# cpu scheduling algorithm
