@@ -37,6 +37,10 @@ class GranttAnalysis:
         turn_around_time_avg = 0
         waiting_time_avg = 0
 
+        self.calculate_response_time()
+        self.calculate_turn_around_time()
+        self.calculate_waiting_time()
+
         print('================================================================================')
         print('                                   %s                                    ' % status)
         print('================================================================================')
