@@ -1,0 +1,6 @@
+process_id,arrival_time,cpu_time1,io_time,cpu_time2
+1,1,2,3,4
+2,12,3,4,1
+3,5,4,5,3
+4,13,4,5,15
+5,13,5,6,7
