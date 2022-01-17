@@ -59,7 +59,7 @@ class RoundRobin:
                 else:
                     current_cpu_time += time_quantum
 
-            if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= current_cpu_time:
+            if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= current_cpu_time and processes_next_ready_queue[str(current_process.process_id)] <= current_cpu_time:
                 if current_process.io_time > 0:
                     ready_processes_queue[0][1] = 0  # sub_count = 0
                     sub_count = 0
