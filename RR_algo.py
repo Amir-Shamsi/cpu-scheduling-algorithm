@@ -95,7 +95,7 @@ class RoundRobin:
                                 info.process = current_process
                                 info.cpu_end_time = current_cpu_time
 
-            if ready_processes_queue[0][1] != sub_count and not finished:
+            if ready_processes_queue[0][1] != sub_count and finished:
                 ready_processes_queue.pop(0)
                 if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time > 0:
                     ready_processes_queue.append([current_process, sub_count])
