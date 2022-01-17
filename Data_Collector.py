@@ -39,4 +39,3 @@ class DataCollector:
                     self.processes.remove(process)
         self.processes.clear()
         self.processes = sorted_processes.copy()
-        print(len(self.processes))
