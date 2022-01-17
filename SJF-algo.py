@@ -46,13 +46,13 @@ class SJF:
 
             if len(self.grantt_chart) == 0:
                 self.grantt_chart.append(
-                    ProcessGrantInfo(process,
-                                     process.arrival_time,  # first cpu start
-                                     process.arrival_time + process.cpu_burst_time1,  # io start time
-                                     process.arrival_time + process.cpu_burst_time1 + process.io_time,  # sec cpu start
-                                     process.arrival_time + process.cpu_burst_time1,  # first cpu end
-                                     process.arrival_time + process.cpu_burst_time1 + process.io_time,  # io end time
-                                     process.arrival_time + process.cpu_burst_time1 + process.io_time + process.cpu_burst_time2)  # sec cpu end
+                    ProcessGrantInfo(current_process,
+                                     current_process.arrival_time,  # first cpu start
+                                     current_process.arrival_time + current_process.cpu_burst_time1,  # io start time
+                                     current_process.arrival_time + current_process.cpu_burst_time1 + current_process.io_time,  # sec cpu start
+                                     current_process.arrival_time + current_process.cpu_burst_time1,  # first cpu end
+                                     current_process.arrival_time + current_process.cpu_burst_time1 + current_process.io_time,  # io end time
+                                     current_process.arrival_time + current_process.cpu_burst_time1 + current_process.io_time + current_process.cpu_burst_time2)  # sec cpu end
                 )
             else:
                 prev_process_grantt = self.grantt_chart[len(self.grantt_chart) - 1]
