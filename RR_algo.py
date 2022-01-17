@@ -29,6 +29,10 @@ class RoundRobin:
                         self.processes.remove(process)
                 not_started = True
 
+            if len(ready_processes_queue) == 0:
+                current_cpu_time += 1
+                continue
+
             sub_count = ready_processes_queue[0][1]
             current_process = ready_processes_queue[0][0]
 
@@ -49,7 +53,7 @@ class RoundRobin:
 
                 current_process.cpu_burst_time1 -= time_quantum
                 sub_count += 1
-                if current_process.cpu_burst_time1 < time_quantum:
+                if current_process.cpu_burst_time1 < 0:
                     current_cpu_time += (current_process.cpu_burst_time1 + time_quantum)
                 else:
                     current_cpu_time += time_quantum
@@ -57,7 +61,8 @@ class RoundRobin:
             if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= current_cpu_time:
                 if current_process.io_time > 0:
                     ready_processes_queue[0][1] = 0  # sub_count = 0
-                    processes_next_ready_queue[current_process.process_id] = current_cpu_time + current_process.io_time
+                    sub_count = 0
+                    processes_next_ready_queue[str(current_process.process_id)] = current_cpu_time + current_process.io_time
 
                     for info in self.grantt_chart:
                         if info.process.process_id == current_process.process_id:
