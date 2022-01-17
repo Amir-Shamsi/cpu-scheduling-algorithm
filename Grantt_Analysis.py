@@ -41,20 +41,22 @@ class GranttAnalysis:
         self.calculate_turn_around_time()
         self.calculate_waiting_time()
 
-        print('============================================================================')
-        print('                                 %s                                    ' % status.upper())
-        print('============================================================================')
+        print('=======================================================================================================')
+        print('                                               %s                                    ' % status.upper())
+        print('=======================================================================================================')
 
-        print('\t\t   Response Time\t  Turnaround Time\t   Waiting Time')
+        print('\t\t   Response Time\t  Turnaround Time\t   Waiting Time\t\t    Start Time\t\t\t End Time')
         indexes  = []
         for info in self.grantt_chart:
             indexes.append(info.process.process_id)
         count = 0
         for index in indexes:
-            print('P%d\t\t\t\t%d\t\t\t\t\t%d\t\t\t\t\t%d' % (index,
+            print('P%d\t\t\t\t%d\t\t\t\t\t%d\t\t\t\t\t%d\t\t\t\t\t%d\t\t\t\t\t%d' % (index,
                                                            self.response_time[count][1],
                                                            self.turn_around_time[count][1],
-                                                           self.waiting_time[count][1]))
+                                                           self.waiting_time[count][1],
+                                                           self.grantt_chart[count].get_start_time(),
+                                                           self.grantt_chart[count].get_end_time()))
             response_time_avg += self.response_time[count][1]
             turn_around_time_avg += self.turn_around_time[count][1]
             waiting_time_avg += self.waiting_time[count][1]
@@ -64,7 +66,7 @@ class GranttAnalysis:
         turn_around_time_avg /= len(self.turn_around_time)
         waiting_time_avg /= len(self.waiting_time)
 
-        print('----------------------------------------------------------------------------')
+        print('-------------------------------------------------------------------------------------------------------')
 
         print('Avg\t\t\t\t%.1f\t\t\t\t%.1f\t\t\t\t%.1f\n' % (response_time_avg,
                                                          turn_around_time_avg,
@@ -76,7 +78,7 @@ class GranttAnalysis:
         print('Efficiency is %.2f' % self.get_cpu_efficiency())
         print('Throughput is %.2f per a second' % self.get_throughput())
 
-        print('============================================================================')
+        print('=======================================================================================================')
 
     def get_idle_time(self):
         return self.get_total_time() - self.get_burst_time()
