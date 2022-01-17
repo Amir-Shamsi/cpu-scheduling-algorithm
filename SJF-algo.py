@@ -43,41 +43,49 @@ class SJF:
             ready_processes_queue = sorted_based_on_burst_time(ready_processes_queue)
             current_process = ready_processes_queue[0]
             ready_processes_queue.remove(current_process)
-            if len(self.grantt_chart) > 0:
-                prev_process_grantt = self.grantt_chart[len(self.grantt_chart) - 1]
-            else:
-                prev_process_grantt = ProcessGrantInfo(0, 0, 0, 0, 0, 0, 0)
 
-            if current_process.arrival_time < prev_process_grantt.get_end_time():
+            if len(self.grantt_chart) == 0:
                 self.grantt_chart.append(
-                    ProcessGrantInfo(current_process,
-                                     prev_process_grantt.get_end_time() + 0,  # first cpu start
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
-                                     # io start time
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
-                                     # sec cpu start
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
-                                     # first cpu end
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
-                                     # io end time
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time + current_process.cpu_burst_time2)
-                    # sec cpu end
+                    ProcessGrantInfo(process,
+                                     process.arrival_time,  # first cpu start
+                                     process.arrival_time + process.cpu_burst_time1,  # io start time
+                                     process.arrival_time + process.cpu_burst_time1 + process.io_time,  # sec cpu start
+                                     process.arrival_time + process.cpu_burst_time1,  # first cpu end
+                                     process.arrival_time + process.cpu_burst_time1 + process.io_time,  # io end time
+                                     process.arrival_time + process.cpu_burst_time1 + process.io_time + process.cpu_burst_time2)  # sec cpu end
                 )
             else:
-                self.grantt_chart.append(
-                    ProcessGrantInfo(current_process,
-                                     current_process.arrival_time,  # first cpu start
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
-                                     # io start time
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
-                                     # sec cpu start
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
-                                     # first cpu end
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
-                                     # io end time
-                                     prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time + current_process.cpu_burst_time2)
-                    # sec cpu end
-                )
+                prev_process_grantt = self.grantt_chart[len(self.grantt_chart) - 1]
+                if current_process.arrival_time < prev_process_grantt.get_end_time():
+                    self.grantt_chart.append(
+                        ProcessGrantInfo(current_process,
+                                         prev_process_grantt.get_end_time() + 0,  # first cpu start
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
+                                         # io start time
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
+                                         # sec cpu start
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
+                                         # first cpu end
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
+                                         # io end time
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time + current_process.cpu_burst_time2)
+                        # sec cpu end
+                    )
+                else:
+                    self.grantt_chart.append(
+                        ProcessGrantInfo(current_process,
+                                         current_process.arrival_time,  # first cpu start
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
+                                         # io start time
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
+                                         # sec cpu start
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1,
+                                         # first cpu end
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time,
+                                         # io end time
+                                         prev_process_grantt.get_end_time() + current_process.cpu_burst_time1 + current_process.io_time + current_process.cpu_burst_time2)
+                        # sec cpu end
+                    )
 
             cpu_current_time = self.grantt_chart[len(self.grantt_chart) - 1].get_end_time()
 
