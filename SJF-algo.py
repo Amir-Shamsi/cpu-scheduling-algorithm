@@ -29,8 +29,8 @@ class SJF:
     def cpu_process(self):
         not_started = False
         ready_processes_queue = []
-        while True:
 
+        while True:
             if not not_started:
                 first_process = self.processes[0]
                 self.processes.remove(first_process)
@@ -39,11 +39,14 @@ class SJF:
                     if process.arrival_time == first_process.arrival_time:
                         ready_processes_queue.append(process)
                         self.processes.remove(process)
-
+                not_started = True
             ready_processes_queue = sorted_based_on_burst_time(ready_processes_queue)
             current_process = ready_processes_queue[0]
             ready_processes_queue.remove(current_process)
-            prev_process_grantt = self.grantt_chart[len(self.grantt_chart) - 1]
+            if len(self.grantt_chart) > 0:
+                prev_process_grantt = self.grantt_chart[len(self.grantt_chart) - 1]
+            else:
+                prev_process_grantt = ProcessGrantInfo(0, 0, 0, 0, 0, 0, 0)
 
             if current_process.arrival_time < prev_process_grantt.get_end_time():
                 self.grantt_chart.append(
