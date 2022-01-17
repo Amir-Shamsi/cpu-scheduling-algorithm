@@ -110,7 +110,7 @@ class RoundRobin:
 
             for process in self.processes.copy():
                 if process.arrival_time <= current_cpu_time:
-                    ready_processes_queue.append([process, 0])
+                    ready_processes_queue.insert(0, [process, 0])
                     self.processes.remove(process)
 
     def get_arrival_times(self):
