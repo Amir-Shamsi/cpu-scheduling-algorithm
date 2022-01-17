@@ -11,36 +11,41 @@ class RoundRobin:
     def __init__(self, processes):
         self.processes = processes
 
-    def cpu_process(self):
-        arrival_time = self.get_arrival_times()
+    def cpu_process(self, time_quantum):
         current_cpu_time = 0
-        first_ready_processes_queue_A = []
-        first_ready_processes_queue_B = []
-        ready_for_io_queue = []
+        prev_cpu_time = 0
+        not_started = False
+        ready_processes_queue = []
+        processes_next_ready_time = self.get_arrival_times()
 
         while True:
-            count = 0
-            if count == len(self.processes):
-                for process in self.processes:
-                    if process.arrival_time <= current_cpu_time:
-                        first_ready_processes_queue_A.append(process)
-                        count += 1
+            if not not_started:
+                first_process = self.processes[0]
+                self.processes.remove(first_process)
+                ready_processes_queue.append(first_process)
+                for process in self.processes.copy():
+                    if process.arrival_time == first_process.arrival_time:
+                        ready_processes_queue.append(process)
+                        self.processes.remove(process)
+                not_started = True
 
-            if len(first_ready_processes_queue_A and first_ready_processes_queue_B) == 0:
+            current_process = ready_processes_queue.pop(0)
+
+            if current_process.cpu_burst_time1 > 0 and current_cpu_time.arrival_time <= current_cpu_time:
+                current_process.cpu_burst_time1 -= time_quantum
+                current_cpu_time = current_process.cpu_burst_time1 + time_quantum
+            if current_process.cpu_burst_time1 <= 0:
+                if current_process.io_time > 0:
+                    processes_next_ready_time[current_process.process_id] = current_cpu_time + current_process.io_time
+                elif current_process.cpu_burst_time2 > 0 and processes_next_ready_time[current_process.process_id] <= current_cpu_time:
+                    current_process.cpu_burst_time2 -= time_quantum
+            
+            if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time > 0:
+                ready_processes_queue.append(current_process)
+
+            if prev_cpu_time == current_cpu_time:
                 current_cpu_time += 1
-            else:
-                process = first_ready_processes_queue_A.pop()
-                if len(self.grantt_chart) == 0:
-                    self.grantt_chart.append(ProcessGrantInfo(
-                        process,
-                        current_cpu_time,
-                        0, 0, 0, 0, 0
-                    ))
-                else:
-                    step = 5
-                    if process.cpu_burst_time1 < 5:
-                        step = process.cpu_burst_time1
-
+            prev_cpu_time = current_cpu_time
 
 
 
@@ -48,6 +53,6 @@ class RoundRobin:
     def get_arrival_times(self):
         _temp = []
         for process in self.processes:
-            _temp.append(process.arrival_time)
+            _temp[process.process_id] = process.arrival_time
         return _temp
 
