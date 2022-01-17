@@ -13,7 +13,7 @@ def sorted_based_on_burst_time(queue):
     burst_times.sort()
     for burst_time in burst_times:
         for process in processes.copy():
-            if process.burst_time == burst_time:
+            if process.cpu_burst_time1 + process.cpu_burst_time2 == burst_time:
                 sorted_processes.append(process)
                 processes.remove(process)
     return sorted_processes.copy()
