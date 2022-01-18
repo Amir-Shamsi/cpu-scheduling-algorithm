@@ -34,7 +34,10 @@ class GranttAnalysis:
             ])
 
     def get_total_time(self):
-        return self.grantt_chart[len(self.grantt_chart) - 1].cpu_end_time2
+        max_end_time = 0
+        for grantt in self.grantt_chart:
+            max_end_time = max(max_end_time, grantt.get_end_time())
+        return max_end_time
 
     def pretty_print(self, status):
         response_time_avg = 0
@@ -59,10 +62,8 @@ class GranttAnalysis:
                                                                                      self.response_time[count][1],
                                                                                      self.turn_around_time[count][1],
                                                                                      self.waiting_time[count][1],
-                                                                                     self.grantt_chart[
-                                                                                         count].get_start_time(),
-                                                                                     self.grantt_chart[
-                                                                                         count].get_end_time()))
+                                                                                     self.grantt_chart[count].get_start_time(),
+                                                                                     self.grantt_chart[count].get_end_time()))
             response_time_avg += self.response_time[count][1]
             turn_around_time_avg += self.turn_around_time[count][1]
             waiting_time_avg += self.waiting_time[count][1]
@@ -75,8 +76,8 @@ class GranttAnalysis:
         print('-------------------------------------------------------------------------------------------------------')
 
         print('Avg\t\t\t\t%.1f\t\t\t\t\t%.1f\t\t\t\t%.1f\n' % (response_time_avg,
-                                                               turn_around_time_avg,
-                                                               waiting_time_avg))
+                                                             turn_around_time_avg,
+                                                             waiting_time_avg))
 
         print('Total Time:', self.get_total_time())
         print('Idle Time:', self.get_idle_time())
