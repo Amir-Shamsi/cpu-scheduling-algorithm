@@ -1,0 +1,2 @@
+###### Requirements Amir-Shamsi/cpu-scheduling-algorithm ######
+pandas=1.3.5
