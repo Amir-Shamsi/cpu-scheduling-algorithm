@@ -50,3 +50,24 @@ you can see and download test file **<a href="test/process_input_data.csv">here<
 <p align='right'>
     <img src="photos/output.png"  alt="output" />
 </p>
+
+
+## Installation
+
+_Below is an example of how you can clone and run project on your local._
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/Amir-Shamsi/cpu-scheduling-algorithm.git
+   ```
+2. Install requirement libraries
+   ```sh
+   pip install -r requirement-libs.txt
+   ```
+3. Make a coffie and enjoy! ☕
+
+<p align="right">
+    (<a href="#top">back to top</a>)
+</p>
+
+
