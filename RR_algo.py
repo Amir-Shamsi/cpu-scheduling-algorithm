@@ -35,7 +35,7 @@ class RoundRobin:
 
             sub_count = ready_processes_queue[0][1]
             current_process = ready_processes_queue[0][0]
-
+            pre_current_process = current_process.cpu_burst_time1+current_process.cpu_burst_time2+current_process.io_time
             if current_process.cpu_burst_time1 > 0 and current_process.arrival_time <= current_cpu_time:
                 not_entered = True
                 for element in self.grantt_chart:
@@ -76,7 +76,7 @@ class RoundRobin:
                             break
                     current_process.io_time = 0
                     finished = True
-                elif current_process.cpu_burst_time2 > 0 and current_process.cpu_burst_time1 < 0:
+                elif current_process.cpu_burst_time2 > 0 and current_process.cpu_burst_time1 <= 0:
                     if sub_count == 0:
                         for info in self.grantt_chart:
                             if info.process.process_id == current_process.process_id:
@@ -84,7 +84,7 @@ class RoundRobin:
                     if processes_next_ready_queue[str(current_process.process_id)] <= current_cpu_time:
                         current_process.cpu_burst_time2 -= time_quantum
                         sub_count += 1
-                        if current_process.cpu_burst_time2 < time_quantum:
+                        if current_process.cpu_burst_time2 < 0:
                             current_cpu_time += (current_process.cpu_burst_time2 + time_quantum)
                         else:
                             current_cpu_time += time_quantum
@@ -95,9 +95,11 @@ class RoundRobin:
                                 info.cpu_end_time2 = current_cpu_time
                                 break
 
-            if ready_processes_queue[0][1] != sub_count or finished:
+            # if ready_processes_queue[0][1] != sub_count or finished:
+            current_process_value = current_process.cpu_burst_time1+current_process.cpu_burst_time2+current_process.io_time
+            if pre_current_process != current_process_value:
                 ready_processes_queue.pop(0)
-                if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time > 0:
+                if current_process.cpu_burst_time2 > 0 or current_process.cpu_burst_time1 > 0 or current_process.io_time > 0:
                     ready_processes_queue.append([current_process, sub_count])
             #  if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time <= 0:
                 #  ready_processes_queue.pop(0)
