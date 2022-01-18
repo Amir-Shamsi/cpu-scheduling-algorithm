@@ -1,5 +1,5 @@
 # CPU Scheduling Algorithm (os simulator)
-<p align='right'>
+<p align='center'>
     <img src="photos/cpu-sch-algo-logo.png"  alt="cpu-scheduling-algos" />
 </p>
 
@@ -17,4 +17,36 @@ This is an OS simulation that has been implemented by the CPU scheduling algorit
     <img src="photos/csa.png" width="600" alt="cpu-scheduling-algos" />
 </p>
 
+<br>
 
+## Program Input File
+must be a comma-separated values (.csv) and the columns must be like this:
+
+| process_id | arrival_time | cpu_time1 | io_time | cpu_time2 |
+| :---: | :---: | :---: | :---: | :---: |
+| 1 | 1 | 2 | 3 | 4 |
+| 2 | 12 | 3 | 4 | 1 |
+| 3 | 5 | 4 | 5 | 3 |
+| 4 | 13 | 4 | 5 | 15 |
+| 5 | 13 | 5 | 6 | 7 |
+
+you can see and download test file **<a href="test/process_input_data.csv">here</a>**
+
+## Program Output
+1. the program will process the processes and will calculate these information:
+    - Response Time
+    - Turnaround Time
+    - Waiting Time
+    - Process' Start Time
+    - Process' End Time
+2. after running the algorithms for each processes these parameteres will be shown for the algorithm:   
+    - Total Time and Idle Time
+    - Average Waiting Time
+    - Average Response Time
+    - Average Turnaround Time
+    - CPU Utilization
+    - Throughput
+
+<p align='right'>
+    <img src="photos/output.png"  alt="output" />
+</p>
