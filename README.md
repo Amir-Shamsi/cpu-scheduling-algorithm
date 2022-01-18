@@ -3,6 +3,14 @@
     <img src="photos/cpu-sch-algo-logo.png"  alt="cpu-scheduling-algos" />
 </p>
 
+
+[![Python version](https://img.shields.io/badge/python-%5E3.8.1-purple?style=flat-square)](https://www.python.org/)
+[![BSD Licence](https://img.shields.io/badge/licence-BSD-geen?style=flat-square)](LICENSE)
+[![Follow me](https://img.shields.io/github/followers/amir-shamsi?label=follow%20me&style=flat-square)](https://github.com/amir-shamsi)
+<a href="https://github.com/Amir-Shamsi/cpu-scheduling-algorithm" title="Repo Size">
+<img src="https://img.shields.io/github/repo-size/Amir-Shamsi/cpu-scheduling-algorithm?label=Repo%20Size&logo=Github&style=flat-square" alt="Project Initiator Repo Size"/>
+</a>
+
 This is an OS simulation that has been implemented by the CPU scheduling algorithms such as:<br>
 - First Come, First Serve (<a href="https://en.wikipedia.org/wiki/Scheduling_(computing)#First_come,_first_served">FCFS</a>)
 - Round Robin (<a href="https://en.wikipedia.org/wiki/Round-robin_scheduling">RR</a>)
