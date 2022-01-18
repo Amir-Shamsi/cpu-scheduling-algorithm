@@ -3,7 +3,6 @@ import sys
 sys.path.append(".")
 from Grantt_Information import ProcessGrantInfo
 
-
 class RoundRobin:
     processes = []
     grantt_chart = []
@@ -109,14 +108,18 @@ class RoundRobin:
                 current_cpu_time += 1
             prev_cpu_time = current_cpu_time
 
-
             _temp = []
+            new_queue = False
             for process in self.processes.copy():
                 if process.arrival_time <= current_cpu_time:
                     _temp.insert(0, [process, 0])
                     self.processes.remove(process)
-            for process_info in _temp.reverse():
-                ready_processes_queue.insert(0, process_info)
+                    new_queue = True
+
+            if new_queue:
+                for process_info in _temp:
+                    ready_processes_queue.insert(0, process_info)
+            _temp.clear()
 
     def get_arrival_times(self):
         _temp = {}
