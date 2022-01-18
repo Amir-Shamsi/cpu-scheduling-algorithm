@@ -4,8 +4,12 @@ class GranttAnalysis:
     response_time = []
     waiting_time = []
 
-    def __init__(self, grantt_chart):
+    def __init__(self, grantt_chart, processes):
         self.grantt_chart = grantt_chart
+        for process_info in self.grantt_chart:
+            for process in processes:
+                if process_info.process.process_id == process.process_id:
+                    process_info.process = process
 
     def calculate_turn_around_time(self):
         for info in self.grantt_chart:
