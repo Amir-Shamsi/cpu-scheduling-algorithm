@@ -1,7 +1,7 @@
 import sys
 
-
 from Grantt_Information import ProcessGrantInfo
+
 sys.path.append(".")
 from FCFS_algo import FCFS
 
@@ -9,6 +9,7 @@ from FCFS_algo import FCFS
 class MLFQ:
     processes = []
     grantt_chart = []
+    current_cpu_time = 0
 
     def __init__(self, processes):
         self.processes = processes
@@ -23,14 +24,13 @@ class MLFQ:
         first_time_quantum = 8
         sec_time_quantum = 16
         self.two_queue_with_diff_quantum(first_time_quantum, sec_time_quantum)
-        third_queue = FCFS(processes=self.processes, mode='0xx1')  # 0xx1: one cycle execute
+        third_queue = fcfs_queue()  # 0xx1: one cycle execute
         third_queue.cpu_process()
         return self.grantt_chart
 
     def two_queue_with_diff_quantum(self, fist_time_quantum, second_time_quantum):
         done_first_time_quantum = []
         is_sec_burst_allowed = False
-        current_cpu_time = 0
         processes_count = len(self.processes)
         prev_cpu_time = 0
         not_started = False
@@ -54,20 +54,20 @@ class MLFQ:
                 not_started = True
 
             if len(ready_processes_queue) == 0:
-                current_cpu_time += 1
+                self.current_cpu_time += 1
                 continue
 
             sub_count = ready_processes_queue[0][1]
             current_process = ready_processes_queue[0][0]
             pre_current_process = current_process.cpu_burst_time1 + current_process.cpu_burst_time2 + current_process.io_time
-            if current_process.cpu_burst_time1 > 0 and current_process.arrival_time <= current_cpu_time:
+            if current_process.cpu_burst_time1 > 0 and current_process.arrival_time <= self.current_cpu_time:
                 not_entered = True
                 for element in self.grantt_chart:
                     if element.process.process_id == current_process.process_id:
                         not_entered = False
                 if not_entered:
                     self.grantt_chart.append(ProcessGrantInfo(current_process,
-                                                              max(current_process.arrival_time, current_cpu_time),
+                                                              max(current_process.arrival_time, self.current_cpu_time),
                                                               # first cpu start
                                                               -1,  # io start time
                                                               -1,  # sec cpu start
@@ -78,25 +78,25 @@ class MLFQ:
                 current_process.cpu_burst_time1 -= time_quantum
                 sub_count += 1
                 if current_process.cpu_burst_time1 < 0:
-                    current_cpu_time += (current_process.cpu_burst_time1 + time_quantum)
+                    self.current_cpu_time += (current_process.cpu_burst_time1 + time_quantum)
                 else:
-                    current_cpu_time += time_quantum
+                    self.current_cpu_time += time_quantum
 
-            if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= current_cpu_time and \
-                    processes_next_ready_queue[str(current_process.process_id)] <= current_cpu_time and \
+            if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= self.current_cpu_time and \
+                    processes_next_ready_queue[str(current_process.process_id)] <= self.current_cpu_time and \
                     is_sec_burst_allowed:
                 if current_process.io_time > 0:
                     ready_processes_queue[0][1] = 0  # sub_count = 0
                     sub_count = 0
                     processes_next_ready_queue[
-                        str(current_process.process_id)] = current_cpu_time + current_process.io_time
+                        str(current_process.process_id)] = self.current_cpu_time + current_process.io_time
 
                     for info in self.grantt_chart:
                         if info.process.process_id == current_process.process_id:
                             info.process = current_process
-                            info.io_start_time = current_cpu_time
-                            info.cpu_end_time1 = current_cpu_time
-                            info.io_end_time = current_cpu_time + current_process.io_time
+                            info.io_start_time = self.current_cpu_time
+                            info.cpu_end_time1 = self.current_cpu_time
+                            info.io_end_time = self.current_cpu_time + current_process.io_time
                             if current_process.cpu_burst_time2 <= 0:
                                 info.cpu_start_time2 = -1
                                 info.cpu_end_time2 = -1
@@ -107,19 +107,19 @@ class MLFQ:
                     if sub_count == 0:
                         for info in self.grantt_chart:
                             if info.process.process_id == current_process.process_id:
-                                info.cpu_start_time2 = current_cpu_time
-                    if processes_next_ready_queue[str(current_process.process_id)] <= current_cpu_time:
+                                info.cpu_start_time2 = self.current_cpu_time
+                    if processes_next_ready_queue[str(current_process.process_id)] <= self.current_cpu_time:
                         current_process.cpu_burst_time2 -= time_quantum
                         sub_count += 1
                         if current_process.cpu_burst_time2 < 0:
-                            current_cpu_time += (current_process.cpu_burst_time2 + time_quantum)
+                            self.current_cpu_time += (current_process.cpu_burst_time2 + time_quantum)
                         else:
-                            current_cpu_time += time_quantum
+                            self.current_cpu_time += time_quantum
                     if current_process.cpu_burst_time2 <= 0:
                         for info in self.grantt_chart:
                             if info.process.process_id == current_process.process_id:
                                 info.process = current_process
-                                info.cpu_end_time2 = current_cpu_time
+                                info.cpu_end_time2 = self.current_cpu_time
                                 break
 
             current_process_value = current_process.cpu_burst_time1 + current_process.cpu_burst_time2 + current_process.io_time
@@ -131,14 +131,14 @@ class MLFQ:
             if len(self.processes) <= 0 and len(ready_processes_queue) <= 0:
                 break
 
-            if prev_cpu_time == current_cpu_time:
-                current_cpu_time += 1
-            prev_cpu_time = current_cpu_time
+            if prev_cpu_time == self.current_cpu_time:
+                self.current_cpu_time += 1
+            prev_cpu_time = self.current_cpu_time
 
             _temp = []
             new_queue = False
             for process in self.processes.copy():
-                if process.arrival_time <= current_cpu_time:
+                if process.arrival_time <= self.current_cpu_time:
                     _temp.insert(0, [process, 0])
                     self.processes.remove(process)
                     new_queue = True
@@ -149,8 +149,51 @@ class MLFQ:
                     done_first_time_quantum.clear()
                 else:
                     break
-                
+
             if new_queue:
                 for process_info in _temp:
                     ready_processes_queue.insert(0, process_info)
             _temp.clear()
+
+    def fcfs_queue(self):
+        for process in self.processes:
+            if len(self.grantt_chart) == 0:
+                self.grantt_chart.append(
+                    ProcessGrantInfo(process,
+                                     process.arrival_time,  # first cpu start
+                                     process.arrival_time + process.cpu_burst_time1,  # io start time
+                                     process.arrival_time + process.cpu_burst_time1 + process.io_time,  # sec cpu start
+                                     process.arrival_time + process.cpu_burst_time1,  # first cpu end
+                                     process.arrival_time + process.cpu_burst_time1 + process.io_time,  # io end time
+                                     process.arrival_time + process.cpu_burst_time1 + process.io_time + process.cpu_burst_time2)
+                    # sec cpu end
+                )
+            else:
+                prev_process_grantt = self.grantt_chart[len(self.grantt_chart) - 1]
+                if process.arrival_time < prev_process_grantt.get_end_time():
+                    self.grantt_chart.append(
+                        ProcessGrantInfo(process,
+                                         prev_process_grantt.get_end_time() + 0,  # first cpu start
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1,  # io start time
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1 + process.io_time,
+                                         # sec cpu start
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1,  # first cpu end
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1 + process.io_time,
+                                         # io end time
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1 + process.io_time + process.cpu_burst_time2)
+                        # sec cpu end
+                    )
+                else:
+                    self.grantt_chart.append(
+                        ProcessGrantInfo(process,
+                                         process.arrival_time,  # first cpu start
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1,  # io start time
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1 + process.io_time,
+                                         # sec cpu start
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1,  # first cpu end
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1 + process.io_time,
+                                         # io end time
+                                         prev_process_grantt.get_end_time() + process.cpu_burst_time1 + process.io_time + process.cpu_burst_time2)
+                        # sec cpu end
+                    )
+        return self.grantt_chart
