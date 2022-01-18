@@ -102,17 +102,21 @@ class RoundRobin:
                     ready_processes_queue.append([current_process, sub_count])
             #  if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time <= 0:
                 #  ready_processes_queue.pop(0)
-            if len(self.processes) <= 0:
+            if len(self.processes) <= 0 and len(ready_processes_queue) <= 0:
                 break
 
             if prev_cpu_time == current_cpu_time:
                 current_cpu_time += 1
             prev_cpu_time = current_cpu_time
 
+
+            _temp = []
             for process in self.processes.copy():
                 if process.arrival_time <= current_cpu_time:
-                    ready_processes_queue.insert(0, [process, 0])
+                    _temp.insert(0, [process, 0])
                     self.processes.remove(process)
+            for process_info in _temp.reverse():
+                ready_processes_queue.insert(0, process_info)
 
     def get_arrival_times(self):
         _temp = {}
