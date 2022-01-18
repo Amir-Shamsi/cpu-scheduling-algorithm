@@ -55,6 +55,7 @@ you can see and download test file **<a href="test/process_input_data.csv">here<
     - CPU Utilization
     - Throughput
 
+example of round robin algorithm's output:
 <p align='right'>
     <img src="photos/output.png"  alt="output" />
 </p>
