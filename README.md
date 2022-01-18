@@ -19,8 +19,8 @@ This is an OS simulation that has been implemented by the CPU scheduling algorit
 
 <br>
 
-## Program Input File
-must be a comma-separated values (.csv) and the columns must be like this:
+## Program Input
+Input data must be entered through a comma-separated values (.csv) and the columns must be like this:
 
 | process_id | arrival_time | cpu_time1 | io_time | cpu_time2 |
 | :---: | :---: | :---: | :---: | :---: |
