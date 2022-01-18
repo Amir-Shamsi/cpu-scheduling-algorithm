@@ -14,14 +14,14 @@ class MLFQ:
 
     def cpu_process(self):
         first_time_quantum = 8
-        first_queue = RoundRobin(processes=self.processes, mode='0x1')  # 0x1: one cycle execute
+        first_queue = RoundRobin(processes=self.processes, mode='0xx1')  # 0xx1: one cycle execute in queue_num = 0
         first_queue.cpu_process(time_quantum=first_time_quantum)
 
         sec_time_quantum = 16
-        sec_queue = RoundRobin(processes=self.processes, mode='0x1')  # 0x1: one cycle execute
+        sec_queue = RoundRobin(processes=self.processes, mode='1xx1')  # 0xx1: one cycle execute in queue_num = 1
         sec_queue.cpu_process(time_quantum=sec_time_quantum)
 
-        third_queue = FCFS(processes=self.processes, mode='0x1')  # 0x1: one cycle execute
+        third_queue = FCFS(processes=self.processes, mode='0xx1')  # 0xx1: one cycle execute
         third_queue.cpu_process()
 
         return self.grantt_chart
