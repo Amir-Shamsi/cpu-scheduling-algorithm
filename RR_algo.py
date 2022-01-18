@@ -73,7 +73,7 @@ class RoundRobin:
                             info.io_end_time = current_cpu_time + current_process.io_time
                             if current_process.cpu_burst_time2 <= 0:
                                 info.cpu_start_time2 = -1
-                                info.cpu_end_time = -1
+                                info.cpu_end_time2 = -1
                             break
                     current_process.io_time = 0
                     finished = True
@@ -93,14 +93,15 @@ class RoundRobin:
                         for info in self.grantt_chart:
                             if info.process.process_id == current_process.process_id:
                                 info.process = current_process
-                                info.cpu_end_time = current_cpu_time
+                                info.cpu_end_time2 = current_cpu_time
+                                break
 
             if ready_processes_queue[0][1] != sub_count or finished:
                 ready_processes_queue.pop(0)
                 if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time > 0:
                     ready_processes_queue.append([current_process, sub_count])
-            if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time <= 0:
-                ready_processes_queue.pop(0)
+            #  if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time <= 0:
+                #  ready_processes_queue.pop(0)
             if len(self.processes) <= 0:
                 break
 
