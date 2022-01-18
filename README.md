@@ -64,7 +64,8 @@ _Below is an example of how you can clone and run project on your local._
    ```sh
    pip install -r requirement-libs.txt
    ```
-3. Make a coffie and enjoy! ☕
+3. Make a coffie and enjoy! ☕🍪
+
 
 <p align="right">
     (<a href="#top">back to top</a>)
