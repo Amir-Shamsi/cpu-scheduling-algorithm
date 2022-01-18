@@ -8,10 +8,13 @@ class RoundRobin:
     processes = []
     mode = ''
     grantt_chart = []
+    queue_num = None
 
     def __init__(self, processes, mode=''):
         self.mode = mode
         self.processes = processes
+        if mode != '':
+            self.queue_num = mode.split('xx')[0]
 
     def cpu_process(self, time_quantum):
         current_cpu_time = 0
