@@ -3,11 +3,14 @@ import sys
 sys.path.append(".")
 from Grantt_Information import ProcessGrantInfo
 
+
 class RoundRobin:
     processes = []
+    mode = ''
     grantt_chart = []
 
-    def __init__(self, processes):
+    def __init__(self, processes, mode=''):
+        self.mode = mode
         self.processes = processes
 
     def cpu_process(self, time_quantum):
@@ -35,7 +38,7 @@ class RoundRobin:
 
             sub_count = ready_processes_queue[0][1]
             current_process = ready_processes_queue[0][0]
-            pre_current_process = current_process.cpu_burst_time1+current_process.cpu_burst_time2+current_process.io_time
+            pre_current_process = current_process.cpu_burst_time1 + current_process.cpu_burst_time2 + current_process.io_time
             if current_process.cpu_burst_time1 > 0 and current_process.arrival_time <= current_cpu_time:
                 not_entered = True
                 for element in self.grantt_chart:
@@ -58,11 +61,13 @@ class RoundRobin:
                 else:
                     current_cpu_time += time_quantum
 
-            if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= current_cpu_time and processes_next_ready_queue[str(current_process.process_id)] <= current_cpu_time:
+            if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= current_cpu_time and \
+                    processes_next_ready_queue[str(current_process.process_id)] <= current_cpu_time:
                 if current_process.io_time > 0:
                     ready_processes_queue[0][1] = 0  # sub_count = 0
                     sub_count = 0
-                    processes_next_ready_queue[str(current_process.process_id)] = current_cpu_time + current_process.io_time
+                    processes_next_ready_queue[
+                        str(current_process.process_id)] = current_cpu_time + current_process.io_time
 
                     for info in self.grantt_chart:
                         if info.process.process_id == current_process.process_id:
@@ -96,13 +101,13 @@ class RoundRobin:
                                 break
 
             # if ready_processes_queue[0][1] != sub_count or finished:
-            current_process_value = current_process.cpu_burst_time1+current_process.cpu_burst_time2+current_process.io_time
+            current_process_value = current_process.cpu_burst_time1 + current_process.cpu_burst_time2 + current_process.io_time
             if pre_current_process != current_process_value:
                 ready_processes_queue.pop(0)
                 if current_process.cpu_burst_time2 > 0 or current_process.cpu_burst_time1 > 0 or current_process.io_time > 0:
                     ready_processes_queue.append([current_process, sub_count])
             #  if current_process.cpu_burst_time2 + current_process.cpu_burst_time1 + current_process.io_time <= 0:
-                #  ready_processes_queue.pop(0)
+            #  ready_processes_queue.pop(0)
             if len(self.processes) <= 0 and len(ready_processes_queue) <= 0:
                 break
 
