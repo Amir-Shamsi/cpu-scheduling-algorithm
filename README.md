@@ -69,7 +69,7 @@ _Below is an example of how you can clone and run project on your local._
    ```sh
    git clone https://github.com/Amir-Shamsi/cpu-scheduling-algorithm.git
    ```
-2. Install requirement libraries
+2. Install required libraries
    ```sh
    pip install -r requirement-libs.txt
    ```
