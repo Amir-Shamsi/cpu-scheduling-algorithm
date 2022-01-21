@@ -1,6 +1,8 @@
 # CPU Scheduling Algorithm (os simulator)
 <p align='center'>
-    <img src="photos/cpu-sch-algo-logo.png"  alt="cpu-scheduling-algos" />
+    <a href="#">
+        <img src="photos/cpu-sch-algo-logo.png"  alt="cpu-scheduling-algos" />
+    </a>
 </p>
 
 
