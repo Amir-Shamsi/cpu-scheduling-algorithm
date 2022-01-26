@@ -5,6 +5,7 @@ from Data_Collector import DataCollector
 from FCFS_algo import FCFS
 from Grantt_Analysis import GranttAnalysis
 from SJF_algo import SJF
+from MLFQ_algo import MLFQ
 from Process import Process
 from RR_algo import RoundRobin
 
@@ -28,8 +29,11 @@ for process in data_collector.getProcesses().copy():
 # ------------------- RR ---------------------
 
 
-rr = RoundRobin(processes=data_collector.getProcesses().copy())
-grantt_chart = rr.cpu_process(time_quantum=5)
+# rr = RoundRobin(processes=data_collector.getProcesses().copy())
+# grantt_chart = rr.cpu_process(time_quantum=5)
 
-analysis = GranttAnalysis(grantt_chart=rr.grantt_chart, processes=processes_copy)
+mlfq = MLFQ(processes=data_collector.getProcesses().copy())
+grantt_chart = mlfq.cpu_process()
+
+analysis = GranttAnalysis(grantt_chart=mlfq.grantt_chart, processes=processes_copy)
 analysis.pretty_print('RR')
