@@ -1,6 +1,8 @@
 # CPU Scheduling Algorithm (os simulator)
 <p align='center'>
-    <img src="photos/cpu-sch-algo-logo.png"  alt="cpu-scheduling-algos" />
+    <a href="#">
+        <img src="photos/cpu-sch-algo-logo.png"  alt="cpu-scheduling-algos" />
+    </a>
 </p>
 
 
@@ -41,13 +43,13 @@ Input data must be entered through a comma-separated values (.csv) and the colum
 you can see and download test file **<a href="test/process_input_data.csv">here</a>**
 
 ## Program Output
-1. the program will process the processes and will calculate these information:
+1. the program will process the processes and will calculate the following information:
     - Response Time
     - Turnaround Time
     - Waiting Time
     - Process' Start Time
     - Process' End Time
-2. after running the algorithms for each processes these parameteres will be shown for the algorithm:   
+2. after running the algorithms for each process these parameters will be shown for the algorithm:   
     - Total Time and Idle Time
     - Average Waiting Time
     - Average Response Time
@@ -63,7 +65,7 @@ example of round robin algorithm's output:
 
 ## Installation
 
-_Below is an example of how you can clone and run project on your local._
+_Below is an example of how you can clone and run the project on your local._
 
 1. Clone the repo
    ```sh
@@ -73,7 +75,7 @@ _Below is an example of how you can clone and run project on your local._
    ```sh
    pip install -r requirement-libs.txt
    ```
-3. Make a coffie and enjoy! ☕🍪
+3. Make a coffee and enjoy! ☕🍪
 
 
 <p align="right">
