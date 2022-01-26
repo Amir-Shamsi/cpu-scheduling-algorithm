@@ -3,7 +3,6 @@ import sys
 from Grantt_Information import ProcessGrantInfo
 
 sys.path.append(".")
-from FCFS_algo import FCFS
 
 
 class MLFQ:
@@ -32,7 +31,7 @@ class MLFQ:
         is_sec_burst_allowed = False
         processes_count = len(self.processes)
         prev_cpu_time = 0
-        not_started = False
+        started = False
         ready_processes_queue = []
         processes_next_ready_queue = self.get_arrival_times()
         cycle = 1
@@ -42,7 +41,7 @@ class MLFQ:
             else:
                 time_quantum = second_time_quantum
 
-            if not not_started:
+            if not started:
                 first_process = self.processes[0]
                 self.processes.remove(first_process)
                 ready_processes_queue.append([first_process, 0])
@@ -50,7 +49,7 @@ class MLFQ:
                     if process.arrival_time == first_process.arrival_time:
                         ready_processes_queue.append([process, 0])
                         self.processes.remove(process)
-                not_started = True
+                started = True
 
             if len(ready_processes_queue) == 0:
                 self.current_cpu_time += 1
