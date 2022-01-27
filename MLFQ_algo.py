@@ -186,19 +186,25 @@ class MLFQ:
 
             if process_info.cpu_end_time1 < 0:
                 process_info.cpu_end_time1 = process_info.cpu_start_time1 + process_info.process.cpu_burst_time1
+                self.current_cpu_time += process_info.process.cpu_burst_time1
 
             if process_info.io_start_time < 0:
                 process_info.io_start_time = process_info.cpu_end_time1
 
             if process_info.io_end_time:
                 process_info.io_start_time = process_info.io_start_time + process_info.process.io_time
+                self.current_cpu_time += process_info.io_end_time
 
             if process_info.cpu_start_time2 < 0:
-                process_info.cpu_start_time2 = process_info.io_end_time + self.current_cpu_time
+                if process_info.io_end_time <= self.current_cpu_time:
+                    process_info.cpu_start_time2 = self.current_cpu_time
+                else:
+                    process_info.cpu_start_time2 = process_info.io_end_time + self.current_cpu_time
+                    self.current_cpu_time += process_info.io_end_time
 
-            elif process_info.cpu_start_time2 > 0 and process_info.process.cpu_burst_time2 > 0:
+            elif process_info.cpu_end_time2 < 0:
                 process_info.cpu_end_time2 = self.current_cpu_time + process_info.process.cpu_burst_time2
-
+                self.current_cpu_time += process_info.process.cpu_burst_time2
 
     def sort(self):
         sorted_processes = []
