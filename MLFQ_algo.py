@@ -23,8 +23,8 @@ class MLFQ:
         first_time_quantum = 8
         sec_time_quantum = 16
         self.two_queue_with_diff_quantum(first_time_quantum, sec_time_quantum)
-        self.fcfs_queue()
         return self.grantt_chart
+        self.fcfs_queue()
 
     def two_queue_with_diff_quantum(self, fist_time_quantum, second_time_quantum):
         done_first_time_quantum = []
@@ -35,6 +35,7 @@ class MLFQ:
         ready_processes_queue = []
         processes_next_ready_queue = self.get_arrival_times()
         cycle = 1
+        total_counter = 0
         while True:
             if cycle == 1:
                 time_quantum = fist_time_quantum
@@ -51,9 +52,12 @@ class MLFQ:
                         self.processes.remove(process)
                 started = True
 
-            if len(ready_processes_queue) == 0:
+            if len(ready_processes_queue) == 0 and not is_sec_burst_allowed:
                 self.current_cpu_time += 1
                 continue
+
+            elif len(ready_processes_queue) == 0 and is_sec_burst_allowed:
+                ready_processes_queue.append([self.processes.pop(0), 0])
 
             sub_count = ready_processes_queue[0][1]
             current_process = ready_processes_queue[0][0]
@@ -81,8 +85,7 @@ class MLFQ:
                     self.current_cpu_time += time_quantum
 
             if current_process.cpu_burst_time1 <= 0 and current_process.arrival_time <= self.current_cpu_time and \
-                    processes_next_ready_queue[str(current_process.process_id)] <= self.current_cpu_time and \
-                    is_sec_burst_allowed:
+                    processes_next_ready_queue[str(current_process.process_id)] <= self.current_cpu_time:
                 if current_process.io_time > 0:
                     ready_processes_queue[0][1] = 0  # sub_count = 0
                     sub_count = 0
@@ -100,8 +103,8 @@ class MLFQ:
                                 info.cpu_end_time2 = -1
                             break
                     current_process.io_time = 0
-                    finished = True
-                elif current_process.cpu_burst_time2 > 0 and current_process.cpu_burst_time1 <= 0:
+
+                elif current_process.cpu_burst_time2 > 0 and current_process.cpu_burst_time1 <= 0 and is_sec_burst_allowed:
                     if sub_count == 0:
                         for info in self.grantt_chart:
                             if info.process.process_id == current_process.process_id:
@@ -123,11 +126,41 @@ class MLFQ:
             current_process_value = current_process.cpu_burst_time1 + current_process.cpu_burst_time2 + current_process.io_time
             if pre_current_process != current_process_value:
                 ready_processes_queue.pop(0)
+                total_counter += 1
                 if current_process.cpu_burst_time2 > 0 or current_process.cpu_burst_time1 > 0 or current_process.io_time > 0:
                     ready_processes_queue.append([current_process, sub_count])
 
             if len(self.processes) <= 0 and len(ready_processes_queue) <= 0:
                 break
+
+            # counter = 0
+            # for each in ready_processes_queue:
+            #     if each[1] > 0:
+            #         counter += 1
+            # if counter == processes_count:
+            #     if is_sec_burst_allowed:
+            #         break
+            #     is_sec_burst_allowed = True
+            #     for each in ready_processes_queue:
+            #         self.processes.append(each[0])
+            #     ready_processes_queue.clear()
+            #     done_first_time_quantum.clear()
+            #     continue
+
+            # if len(self.processes) == 0 and len(ready_processes_queue) == processes_count:
+            if len(ready_processes_queue) == processes_count and total_counter == processes_count:
+                if not is_sec_burst_allowed:
+                    is_sec_burst_allowed = True
+                    for each in ready_processes_queue:
+                        self.processes.append(each[0])
+                    self.sort()
+                    ready_processes_queue.clear()
+                    done_first_time_quantum.clear()
+                    cycle = 2
+                    continue
+                else:
+                    break
+            # else:
 
             if prev_cpu_time == self.current_cpu_time:
                 self.current_cpu_time += 1
@@ -140,13 +173,6 @@ class MLFQ:
                     _temp.insert(0, [process, 0])
                     self.processes.remove(process)
                     new_queue = True
-
-            if len(done_first_time_quantum) == processes_count:
-                if not is_sec_burst_allowed:
-                    is_sec_burst_allowed = True
-                    done_first_time_quantum.clear()
-                else:
-                    break
 
             if new_queue:
                 for process_info in _temp:
@@ -172,3 +198,18 @@ class MLFQ:
 
             elif process_info.cpu_start_time2 > 0 and process_info.process.cpu_burst_time2 > 0:
                 process_info.cpu_end_time2 = self.current_cpu_time + process_info.process.cpu_burst_time2
+
+
+    def sort(self):
+        sorted_processes = []
+        arrival_times = []
+        for process in self.processes:
+            arrival_times.append(process.arrival_time)
+        arrival_times.sort()
+        for arrival_time in arrival_times:
+            for process in self.processes.copy():
+                if process.arrival_time == arrival_time:
+                    sorted_processes.append(process)
+                    self.processes.remove(process)
+        self.processes.clear()
+        self.processes = sorted_processes.copy()
