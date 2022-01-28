@@ -9,6 +9,7 @@ class MLFQ:
     processes = []
     grantt_chart = []
     current_cpu_time = 0
+    ClassName = 'MLFQ'
 
     def __init__(self, processes):
         self.processes = processes
@@ -23,8 +24,8 @@ class MLFQ:
         first_time_quantum = 8
         sec_time_quantum = 16
         self.two_queue_with_diff_quantum(first_time_quantum, sec_time_quantum)
-        return self.grantt_chart
         self.fcfs_queue()
+        return self.grantt_chart
 
     def two_queue_with_diff_quantum(self, fist_time_quantum, second_time_quantum):
         done_first_time_quantum = []

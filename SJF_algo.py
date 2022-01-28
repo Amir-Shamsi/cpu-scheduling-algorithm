@@ -22,6 +22,7 @@ def sorted_based_on_burst_time(queue):
 class SJF:
     processes = []
     grantt_chart = []
+    ClassName = 'SJF'
 
     def __init__(self, processes):
         self.processes = processes

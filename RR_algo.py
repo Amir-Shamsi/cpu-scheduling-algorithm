@@ -9,6 +9,7 @@ class RoundRobin:
     mode = ''
     grantt_chart = []
     queue_num = None
+    ClassName = 'RR'
 
     def __init__(self, processes, mode=''):
         self.mode = mode

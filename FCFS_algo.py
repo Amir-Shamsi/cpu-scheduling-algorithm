@@ -8,6 +8,7 @@ class FCFS:
     processes = []
     grantt_chart = []
     mode = ''
+    ClassName = 'FCFS'
 
     def __init__(self, processes, mode=''):
         self.mode = mode
